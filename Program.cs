@@ -1,3 +1,4 @@
+using TaskList_API;
 using TaskList_API.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +10,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//configuracion ef
+builder.Services.AddSqlServer<TaskContext>(builder.Configuration.GetConnectionString("conectiondb"));
+
 //inyeccion de dependecias
 builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
