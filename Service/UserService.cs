@@ -19,6 +19,13 @@ namespace TaskList_API.Service
 
 
 
+        public UserModel GetOneUser(Guid id)
+        {
+            return context.Users.Find(id);
+        }
+
+
+
 
         public async Task SaveUser(UserModel user)
         {
