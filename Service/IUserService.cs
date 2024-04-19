@@ -9,5 +9,6 @@ namespace TaskList_API.Service
         Task SaveUser(UserModel user);
         Task UpdateUser(Guid id, UserModel user);
         Task DeleteUser(Guid id);
+        Boolean Authenticate(UserModel user);
     }
 }
