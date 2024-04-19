@@ -1,4 +1,5 @@
 using TaskList_API;
+using TaskList_API.Middleware;
 using TaskList_API.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -25,6 +25,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+//middleware para capturar errores
+app.UseErrorMiddleware();
+//middleware para logging
+app.UseLoggingMiddleware();
+
 
 app.UseHttpsRedirection();
 
