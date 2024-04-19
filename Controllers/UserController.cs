@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using TaskList_API.Model;
 using TaskList_API.Service;
+using TaskList_API.utils;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,11 +12,13 @@ namespace TaskList_API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        IUserService UserService;
+        private readonly IUserService UserService;
+        private readonly GenerateJwtToken generateJwtToken;
 
-        public UserController(IUserService service)
+        public UserController(IUserService service, GenerateJwtToken jwtToken)
         {
             this.UserService = service;
+            this.generateJwtToken = jwtToken;
         }
 
         // GET: api/<UserController>
@@ -61,6 +65,25 @@ namespace TaskList_API.Controllers
         {
             UserService.DeleteUser(id);
             return Ok();
+        }
+
+
+
+
+        //POST api/<UserController>/authenticate
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody] UserModel user)
+        {
+            var credentials = UserService.Authenticate(user);
+
+            if (credentials == null)
+            {
+                return BadRequest(new {Message = "Usuario o contraseña incorrecta"});
+            }
+
+            var token = generateJwtToken.GenerateToken(user);
+
+            return Ok(new { token  });
         }
     }
 }
