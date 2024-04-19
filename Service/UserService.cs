@@ -1,4 +1,5 @@
 ﻿using TaskList_API.Model;
+using TaskList_API.utils;
 
 namespace TaskList_API.Service
 {
@@ -29,6 +30,8 @@ namespace TaskList_API.Service
 
         public async Task SaveUser(UserModel user)
         {
+            string NewPassword = PasswordEncryptor.EncryptPassword(user.Password);
+            user.Password = NewPassword;
             context.Add(user);
             await context.SaveChangesAsync();
         }
@@ -42,7 +45,7 @@ namespace TaskList_API.Service
             if (userSearched != null)
             {
                 userSearched.UserName = user.UserName;
-                userSearched.Password = user.Password;
+                userSearched.Password = PasswordEncryptor.EncryptPassword(user.Password);
 
                 await context.SaveChangesAsync();
             }
@@ -59,6 +62,21 @@ namespace TaskList_API.Service
                 context.Remove(userSearched);
                 await context.SaveChangesAsync();
             }
+        }
+
+
+
+
+        public Boolean Authenticate(UserModel user)
+        {
+            string name = user.UserName;
+            var userSearched = context.Users.Find(user.UserName = name);
+
+            //encriptamos la clave ingresada para comparar
+            string password = PasswordEncryptor.EncryptPassword(user.Password);
+
+            //comparamos la clave ingresada con la clave que corresponde al usuario
+            return PasswordEncryptor.VerifyPassword(userSearched.Password, password);
         }
     }
 }
