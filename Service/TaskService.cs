@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
-using TaskList_API.Model;
+﻿using TaskList_API.Model;
 
 namespace TaskList_API.Service
 {
@@ -16,7 +15,16 @@ namespace TaskList_API.Service
 
         public IEnumerable<TaskModel> GetTasks() 
         {
-            return context.Tasks;
+            return context.Tasks
+                .Select(tasks => new TaskModel()
+                {
+                    TaskId = tasks.TaskId,
+                    UserId = tasks.UserId,
+                    TaskName = tasks.TaskName,
+                    TaskDescription = tasks.TaskDescription,
+                    CreatedDate = tasks.CreatedDate,
+                    ImportanceOfTask = tasks.ImportanceOfTask,
+                });
         }
 
 
@@ -31,7 +39,15 @@ namespace TaskList_API.Service
 
         public IEnumerable<TaskModel> GetTaskByUser(Guid userId)
         {
-            return context.Tasks.Where(x => x.UserId == userId);
+            return context.Tasks
+                .Where(x => x.UserId == userId)
+                .Select(tasks => new TaskModel() {
+                    UserId = tasks.TaskId, 
+                    TaskName= tasks.TaskName, 
+                    TaskDescription= tasks.TaskDescription,
+                    CreatedDate = tasks.CreatedDate,
+                    ImportanceOfTask= tasks.ImportanceOfTask
+                });
         }
 
 
@@ -39,8 +55,8 @@ namespace TaskList_API.Service
 
         public async Task SaveTask(TaskModel task)
         {
-            context.Add(task);
-            await context.SaveChangesAsync();
+            context.Tasks.Add(task);
+            await context.SaveChangesAsync();            
         }
 
 
