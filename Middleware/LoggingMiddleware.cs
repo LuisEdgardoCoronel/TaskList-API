@@ -11,7 +11,7 @@
             this.next = next;
         }
 
-        public async void Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
             //registrar informacion entrante
             logger.LogInformation($"Request:{context.Request.Method} {context.Request.Path} from {context.Connection.RemoteIpAddress} at {DateTime.UtcNow}");
