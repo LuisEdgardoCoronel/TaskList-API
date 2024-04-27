@@ -31,7 +31,14 @@ namespace TaskList_API.Service
 
         public TaskModel GetOneTask(Guid id)
         {
-            return context.Tasks.Find(id);
+            TaskModel? tasksearched = context.Tasks.Find(id);
+            return new TaskModel()
+            {
+                TaskName = tasksearched.TaskName,
+                TaskDescription = tasksearched.TaskDescription,
+                CreatedDate = tasksearched.CreatedDate,
+                ImportanceOfTask = tasksearched.ImportanceOfTask,
+            };
         }
 
 
