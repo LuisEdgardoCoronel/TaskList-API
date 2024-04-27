@@ -69,8 +69,8 @@ namespace TaskList_API.Service
 
         public Boolean Authenticate(UserModel user)
         {
-            string name = user.UserName;
-            var userSearched = context.Users.Find(user.UserName = name);
+            var userSearched = context.Users.Find(user.UserId);
+            string name = userSearched.UserName;
 
             //encriptamos la clave ingresada para comparar
             string password = PasswordEncryptor.EncryptPassword(user.Password);
