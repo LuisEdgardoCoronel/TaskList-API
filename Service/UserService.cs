@@ -70,13 +70,13 @@ namespace TaskList_API.Service
         public Boolean Authenticate(UserModel user)
         {
             var userSearched = context.Users.Find(user.UserId);
-            string name = userSearched.UserName;
 
             //encriptamos la clave ingresada para comparar
             string password = PasswordEncryptor.EncryptPassword(user.Password);
 
             //comparamos la clave ingresada con la clave que corresponde al usuario
-            return PasswordEncryptor.VerifyPassword(userSearched.Password, password);
+            if(user.UserName == userSearched.UserName) return PasswordEncryptor.VerifyPassword(userSearched.Password, password);
+            else return false;
         }
     }
 }
