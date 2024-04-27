@@ -43,7 +43,7 @@ namespace TaskList_API.Controllers
         [HttpGet("user/{userId}")]
         public IActionResult GetTaksByUser(Guid userId)
         {
-            return Ok(taskService.GetOneTask(userId));
+            return Ok(taskService.GetTaskByUser(userId));
 
         }
 
@@ -52,9 +52,19 @@ namespace TaskList_API.Controllers
 
         // POST api/<TaskController>
         [HttpPost]
-        public IActionResult Post([FromBody] TaskModel task) 
+        public async Task<IActionResult> Post([FromBody] TaskDto taskdto) 
         {
-            taskService.SaveTask(task);
+            var task = new TaskModel
+            {
+                TaskId = taskdto.TaskId,
+                UserId = taskdto.UserId,
+                TaskName = taskdto.TaskName,
+                TaskDescription = taskdto.TaskDescription,
+                CreatedDate = DateTime.UtcNow,
+                ImportanceOfTask = taskdto.ImportanceOfTask,
+                
+            };
+            await taskService.SaveTask(task);
             return Ok();
         }
 
@@ -63,9 +73,16 @@ namespace TaskList_API.Controllers
 
         // PUT api/<TaskController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromBody] TaskModel task)
+        public async Task<IActionResult> Put(Guid id, [FromBody] TaskDto taskdto)
         {
-            taskService.UpdateTask(id, task);
+            var task = new TaskModel
+            {
+                TaskName = taskdto.TaskName,
+                TaskDescription = taskdto.TaskDescription,
+                ImportanceOfTask = taskdto.ImportanceOfTask,
+
+            };
+            await taskService.UpdateTask(id, task);
             return Ok();
         }
 
@@ -74,9 +91,9 @@ namespace TaskList_API.Controllers
 
         // DELETE api/<TaskController>/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            taskService.DeleteTask(id);
+            await taskService.DeleteTask(id);
             return Ok();
         }
     }
