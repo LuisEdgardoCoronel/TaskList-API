@@ -22,7 +22,6 @@ namespace TaskList_API
                 task.Property(t => t.TaskDescription).IsRequired().HasMaxLength(250);
                 task.Property(t => t.CreatedDate);
                 task.Property(t => t.ImportanceOfTask);
-
             });
 
             modelBuilder.Entity<UserModel>(user => {
