@@ -12,10 +12,10 @@ namespace TaskList_API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService UserService;
-        private readonly GenerateJwtToken generateJwtToken;
+        IUserService UserService;
+        IGenerateJwtToken generateJwtToken;
 
-        public UserController(IUserService service, GenerateJwtToken jwtToken)
+        public UserController(IUserService service, IGenerateJwtToken jwtToken)
         {
             this.UserService = service;
             this.generateJwtToken = jwtToken;
