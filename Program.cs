@@ -1,6 +1,7 @@
 using TaskList_API;
 using TaskList_API.Middleware;
 using TaskList_API.Service;
+using TaskList_API.utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddSqlServer<TaskContext>(builder.Configuration.GetConnectionSt
 //inyeccion de dependecias
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IGenerateJwtToken,  GenerateJwtToken>();
 
 var app = builder.Build();
 
