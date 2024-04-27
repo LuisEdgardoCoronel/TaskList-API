@@ -6,7 +6,7 @@ using TaskList_API.Model;
 
 namespace TaskList_API.utils
 {
-    public class GenerateJwtToken
+    public class GenerateJwtToken:IGenerateJwtToken
     {
         private readonly IConfiguration _configuration;
 
